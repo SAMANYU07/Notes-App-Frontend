@@ -6,6 +6,7 @@ import DefaultScreen from './DefaultScreen';
 import noteService from '../NotesService/NoteService';
 import NewNoteWindow from './NewNoteWindow';
 import DeleteDialog from './DeleteDialog';
+import {useTransition, animated} from "react-spring";
 
 export default function NoteWindow() {
   const [editMode, setEditMode] = useState(false);
@@ -16,6 +17,11 @@ export default function NoteWindow() {
   const currentNote = useSelector(state => state.currentNote);
   const newNoteWin = useSelector(state => state.newNoteWin);
   const dispatch = useDispatch();
+  const dialogTransition = useTransition(deleteModal, {
+    from: {opacity: 0},
+    enter: {opacity: 1},
+    leave: {opacity: 0}
+  });
   const handleDelete = async () => {
     await noteService.deleteNote(note._id)
     .then(() => {
@@ -81,7 +87,13 @@ export default function NoteWindow() {
       <div className=' ml-auto mr-2 mt-2 flex'>
         <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl fill-[#afb4c2] hover:fill-black transition-[0.2s]`}/>
         <MdDelete onClick={enableDeleteModal} className='text-2xl fill-[#afb4c2] hover:fill-black transition-[0.2s]'/>
-        <DeleteDialog open={deleteModal} onClose={disableDeleteModal} onConfirm={handleDelete}/>
+        {dialogTransition((style, show) =>
+        show?
+        <animated.div style={style}>
+          <DeleteDialog open={deleteModal} onClose={disableDeleteModal} onConfirm={handleDelete}/>
+        </animated.div>
+        :null
+        )}
       </div>
       <div className={`  mt-8 p-4 ${editMode ? "h-full" : ""}`}>
         {editMode ?
