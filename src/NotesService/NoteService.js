@@ -5,6 +5,7 @@ export class NoteService {
 
     async getAllNotes() {
         try {
+            console.log("back: ", this.backend);
             return await axios.get(`${this.backend}/api/note`);
         } catch (error) {
             console.log("Error fetching all notes", error.message);
