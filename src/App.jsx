@@ -1,0 +1,40 @@
+import { useEffect, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import NotesPanel from './components/NotesPanel'
+import NoteWindow from './components/NoteWindow'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { addNote } from './features/NotesSlice';
+import noteService from './NotesService/NoteService'
+// import './App.css'
+
+function App() {
+  const [count, setCount] = useState(0)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    noteService.getAllNotes()
+      .then((data) => {
+        console.log(data.data);
+        data.data?.map(note => {
+          dispatch(addNote(note));
+        })
+      })
+      .catch(error => console.log("feching error: ", error))
+  }, [])
+
+  return (
+    <>
+    <div className="flex h-screen">
+      <div className='w-[300px] overflow-y-auto'>
+      <NotesPanel/>
+      </div>
+      <div className='w-full overflow-y-auto'>
+      <NoteWindow/>
+      </div>
+    </div>
+    </>
+  )
+}
+
+export default App
