@@ -24,14 +24,14 @@ export class NoteService {
     }
     async updateNote(noteID, updatedNote) {
         try {
-            return await axios.put(`${this.backend}api/note/update/` + noteID, updatedNote);
+            return await axios.put(`${this.backend}/api/note/update/` + noteID, updatedNote);
         } catch (error) {
             console.log("Error updating note in DB", error.message);
         }
     }
     async deleteNote(noteID) {
         try {
-            return await axios.delete(`${this.backend}api/note/delete/` + noteID);
+            return await axios.delete(`${this.backend}/api/note/delete/` + noteID);
         } catch (error) {
             console.log("Error deleting note in DB", error.message);
         }
