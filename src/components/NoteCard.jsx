@@ -15,7 +15,7 @@ export default function NoteCard({
   }
   return (
     <>
-    <div className='h-[60px] flex flex-col border-t-2' onClick={handleOnClick}>
+    <div className={`h-[60px] flex flex-col border-t-2 ${_id === currentNote?._id ? "bg-[#ecedf0]" : ""}`} onClick={handleOnClick}>
         <span className='font-bold'>{title?.length > 24 ? (title?.slice(0, 24) + "...") : title}</span>
         {noteContent?.length > 20 ?
         <p>{noteContent?.slice(0,24)}...</p>

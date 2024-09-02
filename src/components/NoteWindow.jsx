@@ -5,11 +5,13 @@ import { deleteNote, updateCurrentNote, updateNote } from '../features/NotesSlic
 import DefaultScreen from './DefaultScreen';
 import noteService from '../NotesService/NoteService';
 import NewNoteWindow from './NewNoteWindow';
+import DeleteDialog from './DeleteDialog';
 
 export default function NoteWindow() {
   const [editMode, setEditMode] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState("");
   const [updatedContent, setUpdatedContent] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
   const note = useSelector(state => state.currentNote);
   const currentNote = useSelector(state => state.currentNote);
   const newNoteWin = useSelector(state => state.newNoteWin);
@@ -24,6 +26,7 @@ export default function NoteWindow() {
     })
     if (note._id == currentNote._id)
       dispatch(updateCurrentNote(null));
+    setDeleteModal(false);
   }
   const handleUpdate = async () => {
     await noteService.updateNote(note._id, {
@@ -50,6 +53,13 @@ export default function NoteWindow() {
     // noteService.updateNote(note._id,)
     setEditMode(true);
   }
+  const enableDeleteModal = () => {
+    setDeleteModal(true);
+  }
+  const disableDeleteModal = () => {
+    console.log("Close called");
+    setDeleteModal(false);
+  }
   useEffect(() => {
     setEditMode(false);
   }, [currentNote])
@@ -69,8 +79,9 @@ export default function NoteWindow() {
         <span className=''>{note?.title}</span>
       </div>
       <div className=' ml-auto mr-2 mt-2 flex'>
-        <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""}`}/>
-        <MdDelete onClick={handleDelete}/>
+        <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl`}/>
+        <MdDelete onClick={enableDeleteModal} className='text-2xl'/>
+        <DeleteDialog open={deleteModal} onClose={disableDeleteModal} onConfirm={handleDelete}/>
       </div>
       <div className={`  mt-8 p-4 ${editMode ? "h-full" : ""}`}>
         {editMode ?
