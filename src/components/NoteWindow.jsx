@@ -26,20 +26,25 @@ export default function NoteWindow() {
       dispatch(updateCurrentNote(null));
   }
   const handleUpdate = async () => {
-    setEditMode(false);
     await noteService.updateNote(note._id, {
       title: updatedTitle,
       noteContent: updatedContent,
     })
-    .then(() => {
+    .then(async () => {
+      console.log("start");
       const updatedNote = {
         title: updatedTitle,
         noteContent: updatedContent,
         _id: note._id,
       }
       dispatch(updateCurrentNote(updatedNote));
-      dispatch(updateNote(updatedNote));
+      await dispatch(updateNote(updatedNote));
+      console.log("end");
     })
+    .catch(error => {
+      console.log("updation error: ", error.message);
+    })
+    setEditMode(false);
   }
   const handleEdit = async () => {
     // noteService.updateNote(note._id,)

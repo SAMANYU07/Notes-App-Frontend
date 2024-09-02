@@ -33,17 +33,19 @@ export const noteSlice = createSlice({
         },
         updateNote: (state, action) => {
             const updatedNote = action.payload;
-            const updatedNotes = state.notes?.map(note => {
-                if (note._id == updatedNote._id) {
-                    note.title = updatedNote.title;
-                    note.noteContent = updatedNote.noteContent;
-                }
-            })
+            // const updatedNotes = state.notes?.map(note => {
+            //     if (note._id == updatedNote._id) {
+            //         note.title = updatedNote.title;
+            //         note.noteContent = updatedNote.noteContent;
+            //     }
+            // })
             try {
-                return {
-                    ...state,
-                    notes: updatedNotes
-                }
+                state.notes.map(note => {
+                    if (note._id == updatedNote._id) {
+                        note.title = updatedNote.title;
+                        note.noteContent = updatedNote.noteContent;
+                    }
+                })
             } catch (error) {
                 console.log("Error updating note in redux", error.message);
             }
