@@ -34,8 +34,8 @@ export default function NewNoteWindow() {
                     value={content} onChange={event => setContent(event.target.value)}
                         className='w-full h-[94%]' />
                     <div className='flex gap-x-4'>
-                        <button onClick={handleCancel}>Cancel</button>
-                        <button onClick={handleAdd}>Add</button>
+                        <button onClick={handleCancel} className='cancelButton'>Cancel</button>
+                        <button onClick={handleAdd} className='addUpdateButton'>Add</button>
                     </div>
                 </div>
             </div>

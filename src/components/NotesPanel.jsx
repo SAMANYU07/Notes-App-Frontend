@@ -26,7 +26,7 @@ export default function NotesPanel() {
       <span className='mt-4'>{notes?.length} Notes</span>
       <div className='w-full mt-4 flex flex-col justify-center items-center'>
         <input placeholder='Search' value={search} onChange={(event) => setSearch(event.target.value)} type="text" className='w-5/6 h-[40px]' />
-        <button onClick={handleAddNote} className='w-5/6 mt-4 h-[40px] bg-[#3f7afe] text-white rounded-lg'>+ Add Note</button>
+        <button onClick={handleAddNote} className='w-5/6 mt-4 bg-[#3f7afe] text-white rounded-lg addUpdateButton megaButton'>+ Add Note</button>
       </div>
       <div className='mt-8'>
         {

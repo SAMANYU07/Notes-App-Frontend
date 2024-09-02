@@ -79,8 +79,8 @@ export default function NoteWindow() {
         <span className=''>{note?.title}</span>
       </div>
       <div className=' ml-auto mr-2 mt-2 flex'>
-        <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl`}/>
-        <MdDelete onClick={enableDeleteModal} className='text-2xl'/>
+        <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl fill-[#afb4c2] hover:fill-black transition-[0.2s]`}/>
+        <MdDelete onClick={enableDeleteModal} className='text-2xl fill-[#afb4c2] hover:fill-black transition-[0.2s]'/>
         <DeleteDialog open={deleteModal} onClose={disableDeleteModal} onConfirm={handleDelete}/>
       </div>
       <div className={`  mt-8 p-4 ${editMode ? "h-full" : ""}`}>
@@ -88,10 +88,10 @@ export default function NoteWindow() {
         <div className='w-full h-full'>
         <textarea name="" id="" cols="30" rows="10"
         value={updatedContent} onChange={(event) => setUpdatedContent(event.target.value)}
-        className='w-full h-[90%]'/>
+        className='w-full h-[90%] outline-none border-2 p-1 rounded-lg'/>
         <div className='flex gap-x-4'>
-        <button onClick={() => setEditMode(false)}>Cancel</button>
-        <button onClick={handleUpdate}>Update</button>
+        <button onClick={() => setEditMode(false)} className='cancelButton'>Cancel</button>
+        <button onClick={handleUpdate} className='addUpdateButton'>Update</button>
         </div>
         </div>
         :

@@ -15,8 +15,8 @@ export default function DeleteDialog({ open, onClose, onConfirm }) {
                     <span className='block text-[30px] mt-4'>Are you sure?</span>
                     <span className='mt-6'>This will permanently delete the seleted note.</span>
                     <div className='mt-4 flex gap-x-4'>
-                        <button onClick={onClose}>Cancel</button>
-                        <button onClick={onConfirm}>Delete</button>
+                        <button onClick={onClose} className='cancelButton'>Cancel</button>
+                        <button onClick={onConfirm} className='deleteButton'>Delete</button>
 
                     </div>
                 </dialog>

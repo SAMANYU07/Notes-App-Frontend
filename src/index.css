@@ -7,6 +7,86 @@
   padding: 0;
 }
 
+.cancelButton {
+  background-color: #6b7280;
+  color: white;
+  height: 2.4rem;
+  width: 4rem;
+  border-radius: 6px;
+  position: relative;
+  z-index: 1;
+}
+.cancelButton::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 6px;
+  z-index: -1;
+  background-color: #474c55;
+  transition: 0.2s;
+}
+.cancelButton:hover::after {
+  width: 100%;
+}
+
+.deleteButton {
+  color: red;
+  border: 2px solid red;
+  height: 2.4rem;
+  width: 4rem;
+  border-radius: 6px;
+  z-index: 1;
+  position: relative;
+}
+.deleteButton:hover {
+  color: white;
+}
+.deleteButton::after {
+  content: "";
+  position: absolute;
+  background-color: red;
+  z-index: -1;
+  width: 0%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transition: 0.2s;
+}
+.deleteButton:hover::after {
+  width: 100%;
+}
+
+.addUpdateButton {
+  background-color: #3f7afe;
+  color: white;
+  height: 2.4rem;
+  width: 4rem;
+  border-radius: 6px;
+  z-index: 1;
+  position: relative;
+}
+.addUpdateButton::after {
+  content: "";
+  position: absolute;
+  background-color: #386de0;
+  width: 0%;
+  height: 100%;
+  border-radius: 6px;
+  top: 0;
+  left: 0;
+  transition: 0.2s;
+  z-index: -1;
+}
+.addUpdateButton:hover::after {
+  width: 100%;
+}
+.megaButton {
+  width: 190px;
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
