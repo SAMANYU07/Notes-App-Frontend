@@ -24,7 +24,7 @@ export default function NewNoteWindow() {
     return (
         <>
             <div className=' m-2 flex flex-col h-[96%]'>
-                <div className='border-b-4  mt-10 h-10 inputField'>
+                <div className='border-b-4  mt-10 h-10'>
                     <input type="text" name="" id="" placeholder='Enter title'
                     value={title} onChange={event => setTitle(event.target.value)}
                         className='w-full h-full bg-slate500 text-[1.8rem] outline-none ' />
