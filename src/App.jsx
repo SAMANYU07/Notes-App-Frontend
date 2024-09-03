@@ -5,7 +5,7 @@ import NotesPanel from './components/NotesPanel'
 import NoteWindow from './components/NoteWindow'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
-import { addNote } from './features/NotesSlice';
+import { addNote, toggleLoading } from './features/NotesSlice';
 import noteService from './NotesService/NoteService'
 // import './App.css'
 
@@ -13,14 +13,21 @@ function App() {
   const [count, setCount] = useState(0)
   const dispatch = useDispatch();
   useEffect(() => {
-    noteService.getAllNotes()
-      .then((data) => {
-        console.log(data.data);
-        data.data?.map(note => {
-          dispatch(addNote(note));
+    dispatch(toggleLoading(true));
+    const fetchAllNotes = async () => {
+      noteService.getAllNotes()
+        .then((data) => {
+          console.log(data.data);
+          data.data?.map(note => {
+            dispatch(addNote(note));
+          })
         })
-      })
-      .catch(error => console.log("feching error: ", error))
+        .catch(error => console.log("feching error: ", error))
+        .finally(() => {
+          dispatch(toggleLoading(false));
+        })
+    }
+    fetchAllNotes();
   }, [])
 
   return (
