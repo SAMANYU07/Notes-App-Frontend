@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addNote, toggleNewNoteWin } from '../features/NotesSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { addNote, toggleLoading, toggleNewNoteWin } from '../features/NotesSlice';
 import noteService from '../NotesService/NoteService';
+import LoadingSection from './LoadingSection';
 
 export default function NewNoteWindow() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const loading = useSelector(state => state.loading);
     const dispatch = useDispatch();
     const handleCancel = async () => {
         dispatch(toggleNewNoteWin(false));
     }
     const handleAdd = async () => {
+        dispatch(toggleLoading(true));
         await noteService.addNote({
             title: title,
             noteContent: content,
@@ -19,8 +22,13 @@ export default function NewNoteWindow() {
         .then((data) => {
             dispatch(addNote(data.data));
             dispatch(toggleNewNoteWin(false));
+        })
+        .finally(() => {
+            dispatch(toggleLoading(false));
         });
     }
+    if (loading)
+        return <LoadingSection/>
     return (
         <>
             <div className=' m-2 flex flex-col h-[96%]'>

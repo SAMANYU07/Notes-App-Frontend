@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MdDelete, MdEdit } from "react-icons/md";
-import { deleteNote, updateCurrentNote, updateNote } from '../features/NotesSlice';
+import { deleteNote, toggleLoading, updateCurrentNote, updateNote } from '../features/NotesSlice';
 import DefaultScreen from './DefaultScreen';
 import noteService from '../NotesService/NoteService';
 import NewNoteWindow from './NewNoteWindow';
 import DeleteDialog from './DeleteDialog';
 import {useTransition, animated} from "react-spring";
+import LoadingSection from './LoadingSection';
 
 export default function NoteWindow() {
   const [editMode, setEditMode] = useState(false);
@@ -16,6 +17,7 @@ export default function NoteWindow() {
   const note = useSelector(state => state.currentNote);
   const currentNote = useSelector(state => state.currentNote);
   const newNoteWin = useSelector(state => state.newNoteWin);
+  const loading = useSelector(state => state.loading);
   const dispatch = useDispatch();
   const dialogTransition = useTransition(deleteModal, {
     from: {opacity: 0},
@@ -23,6 +25,7 @@ export default function NoteWindow() {
     leave: {opacity: 0}
   });
   const handleDelete = async () => {
+    dispatch(toggleLoading(true));
     await noteService.deleteNote(note._id)
     .then(() => {
       dispatch(deleteNote(note._id));
@@ -33,8 +36,10 @@ export default function NoteWindow() {
     if (note._id == currentNote._id)
       dispatch(updateCurrentNote(null));
     setDeleteModal(false);
+    dispatch(toggleLoading(false));
   }
   const handleUpdate = async () => {
+    dispatch(toggleLoading(true));
     await noteService.updateNote(note._id, {
       title: updatedTitle,
       noteContent: updatedContent,
@@ -54,6 +59,7 @@ export default function NoteWindow() {
       console.log("updation error: ", error.message);
     })
     setEditMode(false);
+    dispatch(toggleLoading(false));
   }
   const handleEdit = async () => {
     // noteService.updateNote(note._id,)
@@ -73,6 +79,8 @@ export default function NoteWindow() {
     setUpdatedContent(note?.noteContent);
     setUpdatedTitle(note?.title);
   }, [editMode])
+  if (loading)
+    return <LoadingSection/>
   if (currentNote == null) {
     if (newNoteWin)
       return <NewNoteWindow/>
@@ -85,8 +93,8 @@ export default function NoteWindow() {
         <span className=''>{note?.title}</span>
       </div>
       <div className=' ml-auto mr-2 mt-2 flex'>
-        <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl fill-[#afb4c2] hover:fill-black transition-[0.2s]`}/>
-        <MdDelete onClick={enableDeleteModal} className='text-2xl fill-[#afb4c2] hover:fill-black transition-[0.2s]'/>
+        <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl cursor-pointer fill-[#afb4c2] hover:fill-black transition-[0.2s]`}/>
+        <MdDelete onClick={enableDeleteModal} className='text-2xl cursor-pointer fill-[#afb4c2] hover:fill-black transition-[0.2s]'/>
         {dialogTransition((style, show) =>
         show?
         <animated.div style={style}>

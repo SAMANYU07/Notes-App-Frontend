@@ -87,6 +87,26 @@
   width: 190px;
 }
 
+.loadingAnim {
+  animation: loadingAnimation 0.8s infinite;
+}
+.ball2 {
+  animation-delay: 400ms;
+}
+.ball3 {
+  animation-delay: 800ms;
+}
+@keyframes loadingAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
