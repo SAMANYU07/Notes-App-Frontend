@@ -43,14 +43,24 @@ export default function NotesPanel() {
       <div className='mt-8'>
         {
           search?.length > 0 ?
-          notes?.map(note => {
-            if (note?.title.toLowerCase().includes(search))
-            return <NoteCard key={note._id} _id={note._id}
-            title={note.title} noteContent={note.noteContent} bookmark={note.bookmark} />
-          })
+          // notes?.map(note => {
+          //   if (note?.title.toLowerCase().includes(search))
+          //   return <NoteCard key={note._id} _id={note._id}
+          //   title={note.title} noteContent={note.noteContent} bookmark={note.bookmark} />
+          // })
+          cardsTrail?.map((style, index) =>
+          notes[index]?.title.toLowerCase().includes(search)?
+          <animated.div key={index} style={style}>
+          <NoteCard
+          key={notes[index]} _id={notes[index]._id}
+          title={notes[index].title} noteContent={notes[index].noteContent} bookmark={notes[index].bookmark}
+          />
+          </animated.div>
+          :null
+          )
           :
           cardsTrail?.map((style, index) =>
-          <animated.div style={style}>
+          <animated.div style={style} key={index}>
             <NoteCard
             key={notes[index]?._id} _id={notes[index]?._id}
             title={notes[index]?.title} noteContent={notes[index]?.noteContent} bookmark={notes[index]?.bookmark}
