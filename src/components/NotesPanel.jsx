@@ -4,6 +4,7 @@ import NoteCard from './NoteCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, toggleNewNoteWin, updateCurrentNote } from '../features/NotesSlice';
 import noteService from '../NotesService/NoteService';
+import { useTransition, animated } from 'react-spring';
 
 export default function NotesPanel() {
   const [search, setSearch] = useState("");
@@ -14,6 +15,11 @@ export default function NotesPanel() {
     dispatch(updateCurrentNote(null));
     dispatch(toggleNewNoteWin(true));
   }
+  const panelTransition = useTransition(null, {
+    from: {opacity: 0, transform: "scale(90%)"},
+    enter: {opacity: 1, transform: "scale(100%)"},
+    leave: {opacity: 0, transform: "scale(90%)"},
+  });
   useEffect(() => {
     console.log("update: ", notes);
   }, [notes])
@@ -21,7 +27,9 @@ export default function NotesPanel() {
     console.log("current note: ", currentNote);
   }, [currentNote])
   return (
-    <div className='bg-[#f6f7fb] w-full h-full flex flex-col'>
+    <>
+    {panelTransition((style, show) =>
+    <animated.div style={style} className='bg-[#f6f7fb] w-full h-full flex flex-col'>
       <span className='font-bold text-[20px] mt-4 inline-block'>Notes App</span>
       <span className='mt-4'>{notes?.length} Notes</span>
       <div className='w-full mt-4 flex flex-col justify-center items-center'>
@@ -31,18 +39,20 @@ export default function NotesPanel() {
       <div className='mt-8'>
         {
           search?.length > 0 ?
-            notes?.map(note => {
-              if (note?.title.includes(search))
-                return <NoteCard key={note._id} _id={note._id}
-                  title={note.title} noteContent={note.noteContent} bookmark={note.bookmark} />
-            })
-            :
-            notes?.map(note => <NoteCard key={note._id} _id={note._id}
-              title={note.title} noteContent={note.noteContent} bookmark={note.bookmark}
+          notes?.map(note => {
+            if (note?.title.includes(search))
+            return <NoteCard key={note._id} _id={note._id}
+            title={note.title} noteContent={note.noteContent} bookmark={note.bookmark} />
+          })
+          :
+          notes?.map(note => <NoteCard key={note._id} _id={note._id}
+            title={note.title} noteContent={note.noteContent} bookmark={note.bookmark}
             />)
-        }
+          }
         <hr className='h-[2px] bg-[#e5e7eb]' />
       </div>
-    </div>
+    </animated.div>
+      )}
+      </>
   )
 }
