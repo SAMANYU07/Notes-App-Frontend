@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MdDelete, MdEdit } from "react-icons/md";
-import { deleteNote, toggleLoading, updateCurrentNote, updateNote } from '../features/NotesSlice';
+import { deleteNote, toggleLoading, updateCurrentNote, updateNote, toggleBookmark } from '../features/NotesSlice';
 import DefaultScreen from './DefaultScreen';
 import noteService from '../NotesService/NoteService';
 import NewNoteWindow from './NewNoteWindow';
 import DeleteDialog from './DeleteDialog';
 import {useTransition, animated} from "react-spring";
 import LoadingSection from './LoadingSection';
+import { MdOutlineBookmark } from "react-icons/md";
 
 export default function NoteWindow() {
   const [editMode, setEditMode] = useState(false);
@@ -36,6 +37,16 @@ export default function NoteWindow() {
     if (note._id == currentNote._id)
       dispatch(updateCurrentNote(null));
     setDeleteModal(false);
+    dispatch(toggleLoading(false));
+  }
+  const handleToggleBookmark = async () => {
+    dispatch(toggleLoading(true));
+    await noteService.updateNote(note._id, {
+      bookmark: !currentNote.bookmark,
+    })
+    .then(() => {
+      dispatch(toggleBookmark(note._id));
+    })
     dispatch(toggleLoading(false));
   }
   const handleUpdate = async () => {
@@ -93,6 +104,7 @@ export default function NoteWindow() {
         <span className=''>{note?.title}</span>
       </div>
       <div className=' ml-auto mr-2 mt-2 flex'>
+        <MdOutlineBookmark onClick={handleToggleBookmark} className={`text-2xl cursor-pointer fill-[#afb4c2] hover:fill-black transition-[0.2s] ${note.bookmark ? `fill-green-400` : ``}`}/>
         <MdEdit onClick={handleEdit} className={`${editMode ? "hidden" : ""} text-2xl cursor-pointer fill-[#afb4c2] hover:fill-black transition-[0.2s]`}/>
         <MdDelete onClick={enableDeleteModal} className='text-2xl cursor-pointer fill-[#afb4c2] hover:fill-black transition-[0.2s]'/>
         {dialogTransition((style, show) =>

@@ -64,6 +64,20 @@ export const noteSlice = createSlice({
                 console.log("Error in note deletion", error);
             }
         },
+        toggleBookmark: (state, action) => {
+            try {
+                state.notes.map(note => {
+                    if (note._id === action.payload) {
+                        note.bookmark = !note.bookmark;
+                        if (note._id === state.currentNote._id) {
+                            state.currentNote.bookmark = !state.currentNote.bookmark;
+                        }
+                    }
+                });
+            } catch (error) {
+                console.log("Error toggle bookmark in redux", error.message);
+            }
+        },
         toggleNewNoteWin: (state, action) => {
             state.newNoteWin = action.payload;
         },
@@ -76,5 +90,5 @@ export const noteSlice = createSlice({
     }
 })
 
-export const {addNote, updateCurrentNote, deleteNote, updateNote, toggleNewNoteWin, toggleLoading, toggleShowBookmarked} = noteSlice.actions;
+export const {addNote, updateCurrentNote, deleteNote, updateNote, toggleNewNoteWin, toggleLoading, toggleShowBookmarked, toggleBookmark} = noteSlice.actions;
 export default noteSlice.reducer;
