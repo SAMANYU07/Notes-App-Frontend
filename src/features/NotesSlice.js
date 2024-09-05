@@ -5,6 +5,7 @@ const initialState = {
     currentNote: null,
     newNoteWin: false,
     loading: false,
+    showBookmarked: false,
 };
 
 export const noteSlice = createSlice({
@@ -68,9 +69,12 @@ export const noteSlice = createSlice({
         },
         toggleLoading: (state, action) => {
             state.loading = action.payload;
-        }
+        },
+        toggleShowBookmarked: (state, action) => {
+            state.showBookmarked = action.payload;
+        },
     }
 })
 
-export const {addNote, updateCurrentNote, deleteNote, updateNote, toggleNewNoteWin, toggleLoading} = noteSlice.actions;
+export const {addNote, updateCurrentNote, deleteNote, updateNote, toggleNewNoteWin, toggleLoading, toggleShowBookmarked} = noteSlice.actions;
 export default noteSlice.reducer;

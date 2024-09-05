@@ -5,10 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addNote, toggleNewNoteWin, updateCurrentNote } from '../features/NotesSlice';
 import noteService from '../NotesService/NoteService';
 import { useTransition, animated, useTrail } from 'react-spring';
+import { useLocation } from 'react-router-dom';
 
 export default function NotesPanel() {
   const [search, setSearch] = useState("");
-  const notes = useSelector(state => state.notes);
+  const location = useLocation();
+  const showBookmarked =useSelector(state => state.showBookmarked);
+  const notes = useSelector(state => {
+    if (location.pathname.includes("bookmarks")) {
+      return state.notes.filter(note => note.bookmark === true)
+    }
+    else
+      return state.notes;
+  });
   const currentNote = useSelector(state => state.currentNote);
   const dispatch = useDispatch();
   const handleAddNote = async () => {
@@ -34,7 +43,9 @@ export default function NotesPanel() {
     <>
     {panelTransition((style, show) =>
     <animated.div style={style} className='bg-[#f6f7fb] w-full h-full flex flex-col'>
-      <span className='font-bold text-[20px] mt-4 inline-block'>Notes App</span>
+      <span className='font-bold text-[20px] mt-4 inline-block'>
+        {location.pathname.includes("bookmarks") ? `Bookmarks` : `All Notes`}
+      </span>
       <span className='mt-4'>{notes?.length} Notes</span>
       <div className='w-full mt-4 flex flex-col justify-center items-center'>
         <input placeholder='Search' value={search} onChange={(event) => setSearch(event.target.value)} type="text" className='w-5/6 h-[40px] outline-none' />

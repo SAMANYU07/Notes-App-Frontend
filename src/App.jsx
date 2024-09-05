@@ -7,7 +7,19 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, toggleLoading } from './features/NotesSlice';
 import noteService from './NotesService/NoteService'
+import Home from './components/Home'
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import Layout from './Layout'
 // import './App.css'
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route element={<Layout/>} path='/'>
+      <Route element={<Home/>} path=''/>
+      <Route element={<Home/>} path='/bookmarks'></Route>
+    </Route>
+  )
+)
 
 function App() {
   const [count, setCount] = useState(0)
@@ -29,17 +41,9 @@ function App() {
     }
     fetchAllNotes();
   }, [])
-
   return (
     <>
-    <div className="flex h-screen">
-      <div className='w-[300px] overflow-y-auto'>
-      <NotesPanel/>
-      </div>
-      <div className='w-full overflow-y-auto'>
-      <NoteWindow/>
-      </div>
-    </div>
+    <RouterProvider router={router}/>
     </>
   )
 }
